@@ -1,11 +1,10 @@
 import axios from "axios";
 import * as actions from "../actionType"
 
-const initialState = []
 
-export default function logout(state = initialState, action){
+export default function logout(state = {}, action){
     switch(action.type){
-        case actions.LOGOUT: (initialState = [])
+        case actions.LOGOUT: return (state= {...state, data: null, error: null, loading: false})
         default: return state
     }
 }
