@@ -1,7 +1,7 @@
 import {React, useState} from 'react'
 import { GetUsers, login } from "./redux/api";
 import { Button } from "@mui/material";
-import { Form, FormInput } from "./Styled/Styles";
+import { Form, FormContainer, FormInput, ImgContainer, LoginBtn, LoginContainer, MainContainer } from "./Styled/Styles";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
@@ -12,14 +12,17 @@ function Login() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.login.data)
   return (
-    <div>
+    <MainContainer>
+      <FormContainer>
         <h1>Login</h1>
         <Form>
-        <FormInput placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <FormInput placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Link to={`/UserDashboard`} onClick={() => {dispatch(GetUsers(username, password))}}>Login</Link>        
+        <FormInput type='text' placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <FormInput type='password' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <LoginBtn to={`/UserDashboard`} onClick={() => {dispatch(GetUsers(username, password))}}>Login</LoginBtn>        
       </Form>
-    </div>
+      </FormContainer>
+      <ImgContainer>Welcome Back!</ImgContainer>
+    </MainContainer>
   )
 }
 

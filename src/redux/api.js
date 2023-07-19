@@ -1,6 +1,5 @@
 import axios from "axios";
-import {getUserRequest, getUsersFailure, getUserSuccess} from "./useractions"
-
+import * as actions from "./actionType";
 // export function login(username, password){
 //     return {
 //         type: actions.LOGIN,
@@ -11,17 +10,16 @@ import {getUserRequest, getUsersFailure, getUserSuccess} from "./useractions"
 //     }
 // }
 
-
 // export const login  = (username, password)=>{
-  
+
 //     // Thunk Function
 //     return async (dispatch,getState)=>{
-  
+
 //         // Fetching results from an API : asynchronous action
 //         const response = await axios.get(
 //             'http://localhost:8000/users');
 //         const users = await response.data;
-  
+
 //         // Dispatching the action when async
 //         // action has completed.
 //         dispatch({
@@ -32,33 +30,50 @@ import {getUserRequest, getUsersFailure, getUserSuccess} from "./useractions"
 // }
 
 export const GetUsers = (username, password) => {
-    console.log("GetUsers");
+  return (dispatch) => {
+    dispatch({
+      type: actions.GET_USERS_REQUEST,
+      payload: {
+        loading: true,
+      },
+    });
+    try {
+      axios.get("http://localhost:8000/users").then((res) => {
+        const users = res.data;
+        users.map((user) => {
+          if (
+            user.login.username === username &&
+            user.login.password === password
+          ) {
+            dispatch({
+              type: actions.GET_USERS_SUCCESS,
+              payload: {
+                loading: false,
+                data: user,
+              },
+            });
+          }
+        });
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.GET_USERS_FAILURE,
+        payload: {
+          loading: false,
+          data: err.message,
+        },
+      });
+    }
 
-    return dispatch => {
-        dispatch(getUserRequest())
-        try{
-            axios.get('http://localhost:8000/users').then(res => {
-                const users = res.data
-                users.map(user => {
-                    if((user.login.username === username) && user.login.password === password){
-                        dispatch(getUserSuccess(user));
-                    }
-                })
-            })
-        }
-        catch(err){
-            dispatch(getUsersFailure(err.message))
-        }
+    // axios.get(`http://localhost:8000/users`)
+    // .then(res => {
+    //     const persons = res.data;
 
-        // axios.get(`http://localhost:8000/users`)
-        // .then(res => {
-        //     const persons = res.data;
-            
-        //     dispatch({
-        //         type: actions.GET_USERS_SUCCESS,
-        //         users: persons
-                
-        //     });
-        // })
-    };
+    //     dispatch({
+    //         type: actions.GET_USERS_SUCCESS,
+    //         users: persons
+
+    //     });
+    // })
+  };
 };

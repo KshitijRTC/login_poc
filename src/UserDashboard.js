@@ -1,130 +1,147 @@
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import { Link } from "react-router-dom";
-import { Button, capitalize } from "@mui/material";
-import * as actions from "./redux/actionType"
+import * as actions from "./redux/actionType";
+import {
+  Dashboard,
+  DashboardContainer,
+  ErrorContainer,
+  InfoContainer,
+  InfoContent,
+  InfoEntry,
+  InfoHeading,
+  LogoutBtn,
+  NameContainer,
+  ProfileContainer,
+  TryagainBtn,
+} from "./Styled/Styles";
 
 function UserDashboard() {
   const user = useSelector((state) => state?.login?.data);
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <DashboardContainer>
       {user !== null ? (
-        <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+        <Dashboard>
           <h3>Profile</h3>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              border: "1px solid rgb(238,238,238)",
-              borderRadius: "10px",
-            }}
-          >
-            <div style={{ width: "150px" }}>
-              <Avatar
-                sx={{ width: 100, height: 100 }}
-                src={user?.picture?.large}
-              />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <h3 style={{ textTransform: "capitalize" }}>
+          <ProfileContainer>
+            <Avatar
+              sx={{ width: 100, height: 100 }}
+              src={user?.picture?.large}
+            />
+            <NameContainer>
+              <span style={{ fontSize: "20px", fontWeight: "700" }}>
                 {user?.name?.first} {user?.name?.last}
-              </h3>
-              <p>{user?.gender}</p>
-              <p>{user?.location?.city}</p>
-            </div>
-          </div>
-          <div
-            style={{
-              border: "1px solid rgb(238,238,238)",
-              borderRadius: "10px",
-            }}
-          >
-            <div>
+              </span>
+              <span style={{ color: "grey", fontSize: "14px" }}>
+                {user?.gender}
+              </span>
+              <span style={{ color: "grey", fontSize: "14px" }}>
+                {user?.location?.city}, {user?.location?.state}
+              </span>
+            </NameContainer>
+          </ProfileContainer>
+          <InfoContainer>
+            <InfoHeading>
               <h4>Personal Information</h4>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridTemplateRows: "1fr 1fr 1fr",
-              }}
-            >
-              <div>
-                <p>First Name</p>
-                <p>{user?.name?.first}</p>
-              </div>
-              <div>
-                <p>Last Name</p>
-                <p>{user?.name?.last}</p>
-              </div>
-              <div>
-                <p>Email</p>
-                <p>{user?.email}</p>
-              </div>
-              <div>
-                <p>Phone</p>
-                <p>{user?.phone}</p>
-              </div>
-              <div>
-                <p>Nationality</p>
-                <p>{user?.nat}</p>
-              </div>
-            </div>
-          </div>
-          <div
-            style={{
-              border: "1px solid rgb(238,238,238)",
-              borderRadius: "10px",
+            </InfoHeading>
+            <InfoContent>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>
+                  First Name
+                </span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.name?.first}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>
+                  Last Name
+                </span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.name?.last}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>Email</span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.email}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>Phone</span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.phone}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>
+                  Nationality
+                </span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.nat}
+                </p>
+              </InfoEntry>
+            </InfoContent>
+          </InfoContainer>
+          <InfoContainer>
+            <InfoHeading>
+              <h4>Address</h4>
+            </InfoHeading>
+            <InfoContent>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>Street</span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.location?.street}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>
+                  City/State
+                </span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.location?.city}, {user?.location?.state}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>
+                  Postal Code
+                </span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.location?.postcode}
+                </p>
+              </InfoEntry>
+              <InfoEntry>
+                <span style={{ fontSize: "13px", color: "grey" }}>Country</span>
+                <p style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  {user?.nat}
+                </p>
+              </InfoEntry>
+            </InfoContent>
+          </InfoContainer>
+          <LogoutBtn
+            to={"/"}
+            onClick={() => {
+              dispatch({
+                type: actions.LOGOUT,
+                payload: {
+                  data: null,
+                },
+              });
             }}
           >
-            <div>
-              <h4>Address</h4>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridTemplateRows: "1fr 1fr",
-              }}
-            >
-              <div>
-                <p>Street</p>
-                <p>{user?.location?.street}</p>
-              </div>
-              <div>
-                <p>City/State</p>
-                <p>{user?.location?.city}, {user?.location?.state}</p>
-              </div>
-              <div>
-                <p>Postal Code</p>
-                <p>{user?.location?.postcode}</p>
-              </div>
-              <div>
-                <p>Country</p>
-                <p>{user?.nat}</p>
-              </div>
-              
-            </div>
-          </div>
-          <Link to={"/"}>Logout</Link>
-        </div>
+            Logout
+          </LogoutBtn>
+        </Dashboard>
       ) : (
-        <div>
+        <ErrorContainer>
           <h1>Error!!!! User not found</h1>
-          <Link to={"/"}>Try Again</Link>
-        </div>
+          <TryagainBtn to={"/"}>Try Again</TryagainBtn>
+        </ErrorContainer>
       )}
-    </div>
+    </DashboardContainer>
   );
 }
 
